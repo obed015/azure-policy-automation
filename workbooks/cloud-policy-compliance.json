@@ -1,0 +1,81 @@
+{
+  "id": "220a482d-b80e-4538-8938-970f584ef2f5",
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "AzureActivity\r\n| where CategoryValue == \"Policy\"\r\n| where ActivityStatusValue == \"Failure\"\r\n| summarize Count = count() by ResourceGroup\r\n| order by Count desc\r\n",
+        "size": 0,
+        "timeContext": {
+          "durationMs": 86400000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "/subscriptions/a717b11e-bf87-4860-a648-eb0c02e23e12/resourceGroups/rg-governance-core/providers/Microsoft.OperationalInsights/workspaces/law-governance"
+        ],
+        "visualization": "barchart"
+      },
+      "name": "query - 0"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "AzureActivity\r\n| where CategoryValue == \"Policy\"\r\n| where ActivityStatusValue == \"Failure\"\r\n| summarize Count = count() by bin(TimeGenerated, 1h)\r\n| order by TimeGenerated asc\r\n",
+        "size": 0,
+        "timeContext": {
+          "durationMs": 86400000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "/subscriptions/a717b11e-bf87-4860-a648-eb0c02e23e12/resourceGroups/rg-governance-core/providers/Microsoft.OperationalInsights/workspaces/law-governance"
+        ],
+        "visualization": "linechart"
+      },
+      "name": "query - 1"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "AzureActivity\r\n| where CategoryValue == \"Policy\"\r\n| where ActivityStatusValue == \"Failure\"\r\n| summarize Count = count() by Caller\r\n| top 10 by Count\r\n",
+        "size": 0,
+        "timeContext": {
+          "durationMs": 86400000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "/subscriptions/a717b11e-bf87-4860-a648-eb0c02e23e12/resourceGroups/rg-governance-core/providers/Microsoft.OperationalInsights/workspaces/law-governance"
+        ],
+        "visualization": "piechart"
+      },
+      "name": "query - 2"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "AzureActivity\r\n| where CategoryValue == \"Policy\"\r\n| where ActivityStatusValue in (\"Failure\", \"Success\")\r\n| project TimeGenerated, OperationNameValue, ActivityStatusValue,\r\n          Caller, ResourceGroup, SubscriptionId, EventSubmissionTimestamp\r\n| order by TimeGenerated desc\r\n",
+        "size": 0,
+        "timeContext": {
+          "durationMs": 86400000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "/subscriptions/a717b11e-bf87-4860-a648-eb0c02e23e12/resourceGroups/rg-governance-core/providers/Microsoft.OperationalInsights/workspaces/law-governance"
+        ]
+      },
+      "name": "query - 3"
+    }
+  ],
+  "fallbackResourceIds": [
+    "Azure Monitor"
+  ],
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}
