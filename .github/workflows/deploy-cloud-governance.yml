@@ -4,9 +4,9 @@ on:
   push:
     branches: [ main ]
     paths:
-      - "**/*.bicep"
-      - ".github/workflows/deploy-cloud-governance.yml"
-  workflow_dispatch: {}
+      - '**/*.bicep'
+      - '.github/workflows/deploy-cloud-governance.yml'
+  workflow_dispatch:
 
 permissions:
   id-token: write
@@ -30,11 +30,34 @@ jobs:
       - name: Ensure Bicep CLI is available
         run: az bicep install
 
-      - name: List files in repo (debug)
-        run: ls -R
+      - name: List all Bicep files
+        run: |
+          echo "=== Repository structure ==="
+          pwd
+          echo ""
+          echo "=== All .bicep files ==="
+          find . -name "*.bicep" -type f
+          echo ""
+          echo "=== Contents of root directory ==="
+          ls -la
+
+      - name: Build Bicep template
+        run: |
+          echo "=== Building main.bicep to verify syntax ==="
+          az bicep build --file main.bicep
+          echo "Build successful!"
 
       - name: Validate Bicep template (what-if)
-        run: az deployment sub what-if --name cloud-governance-baseline-preview --location "${{ vars.DEPLOY_LOCATION }}" --template-file ./main.bicep
+        run: |
+          az deployment sub what-if \
+            --name cloud-governance-baseline-preview \
+            --location ${{ vars.DEPLOY_LOCATION }} \
+            --template-file main.bicep
 
       - name: Deploy Cloud Governance Baseline
-        run: az deployment sub create --name cloud-governance-baseline --location "${{ vars.DEPLOY_LOCATION }}" --template-file ./main.bicep
+        if: success()
+        run: |
+          az deployment sub create \
+            --name cloud-governance-baseline \
+            --location ${{ vars.DEPLOY_LOCATION }} \
+            --template-file main.bicep
