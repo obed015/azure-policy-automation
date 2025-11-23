@@ -30,23 +30,22 @@ jobs:
       - name: Ensure Bicep CLI is available
         run: az bicep install
 
-      # Debug step – just to be 100% sure we're in the right folder
       - name: List files in repo (debug)
         run: |
           pwd
           ls -R
 
       - name: Validate Bicep template (what-if)
-        run: >
-          az deployment sub what-if
-          --name cloud-governance-baseline-preview
-          --location ${{ vars.DEPLOY_LOCATION }}
-          --template-file ./main.bicep
+        run: |
+          az deployment sub what-if \
+            --name cloud-governance-baseline-preview \
+            --location ${{ vars.DEPLOY_LOCATION }} \
+            --template-file ./main.bicep
 
       - name: Deploy Cloud Governance Baseline
         if: success()
-        run: >
-          az deployment sub create
-          --name cloud-governance-baseline
-          --location ${{ vars.DEPLOY_LOCATION }}
-          --template-file ./main.bicep
+        run: |
+          az deployment sub create \
+            --name cloud-governance-baseline \
+            --location ${{ vars.DEPLOY_LOCATION }} \
+            --template-file ./main.bicep
