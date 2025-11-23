@@ -9,7 +9,6 @@
 targetScope = 'subscription'
 
 // ---------------------- PARAMETERS ----------------------
-
 @description('Subscription where the initiative will be assigned.')
 param targetSubscriptionId string = subscription().subscriptionId
 
@@ -30,7 +29,6 @@ param actionGroupRgName string = 'rg-governance-core'
 param actionGroupName string = 'policy-alerts'
 
 // ---------------------- VARIABLES -----------------------
-
 // Build resource IDs from subscription + RG + name
 var workspaceId = resourceId(
   subscription().subscriptionId,
@@ -47,7 +45,6 @@ var actionGroupId = resourceId(
 )
 
 // ---------------------- MODULES -------------------------
-
 // 1. Policy definition: Audit Public Network Access
 module policy './policies/policy.bicep' = {
   name: 'policy-audit-public-network-access'
