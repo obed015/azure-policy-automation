@@ -9,7 +9,7 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  id-token: write       # required for OIDC
+  id-token: write
   contents: read
 
 jobs:
@@ -30,10 +30,18 @@ jobs:
       - name: Ensure Bicep CLI is available
         run: az bicep install
 
-      # What-if validation (single-line command so az sees the template properly)
       - name: Validate Bicep template (what-if)
-        run: az deployment sub what-if --name cloud-governance-baseline-preview --location ${{ vars.DEPLOY_LOCATION }} --template-file main.bicep
+        working-directory: ${{ github.workspace }}
+        run: |
+          az deployment sub what-if \
+            --name cloud-governance-baseline-preview \
+            --location ${{ vars.DEPLOY_LOCATION }} \
+            --template-file ./main.bicep
 
-      # Actual deployment
       - name: Deploy Cloud Governance Baseline
-        run: az deployment sub create --name cloud-governance-baseline --location ${{ vars.DEPLOY_LOCATION }} --template-file main.bicep
+        working-directory: ${{ github.workspace }}
+        run: |
+          az deployment sub create \
+            --name cloud-governance-baseline \
+            --location ${{ vars.DEPLOY_LOCATION }} \
+            --template-file ./main.bicep
