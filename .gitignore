@@ -1,0 +1,31 @@
+# Bicep build artifacts
+*.json
+
+# Terraform (future-proof)
+.terraform/
+*.tfstate
+*.tfstate.*
+
+# VS Code
+.vscode/
+
+# Python venv (future-proof)
+env/
+venv/
+
+# Node modules
+node_modules/
+
+# Logs
+*.log
+
+# Local environment files
+*.env
+*.local
+*.settings
+
+# Azure CLI / Az PowerShell cache
+.azure/
+
+# GitHub Codespaces
+.gitpod/
